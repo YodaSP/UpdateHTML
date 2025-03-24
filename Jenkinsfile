@@ -35,8 +35,7 @@ pipeline {
         stage('Jenkins Library Test') {
             steps {
                 script {
-                    def metadata = buildinfo.getMetadata(currentBuild)
-                    echo "Build Metadata: ${metadata}"
+                    getMetadata(currentBuild) 
                 }
             }
         }
