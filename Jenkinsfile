@@ -2,7 +2,9 @@
 
 pipeline {
     agent { label 'yoda' }  // Run on agent "yoda"
-
+    parameters {
+     string(name: 'NEW_TITLE', defaultValue: 'Welcome to My Site', description: 'New Title for index.html')
+    }
     stages {
         stage('Checkout Code') {
             steps {
@@ -24,10 +26,8 @@ pipeline {
             steps {
                 script {
                     
-
-                    sh """
-                        python3 ${WORKSPACE}/update_html.py
-                    """
+                        sh "python3 /mnt/d/Devops/Project/DockerVolume/nginx/update_index.py '${params.NEW_TITLE}'"
+                  
                 }
             }
         }
