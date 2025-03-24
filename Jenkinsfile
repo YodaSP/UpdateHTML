@@ -19,5 +19,18 @@ pipeline {
                 }
             }
         }
+
+        stage('Invoke Python Script') {
+            steps {
+                script {
+                    def buildMetadata = getMetadata(currentBuild)  // Fetch build metadata
+
+                    sh """
+                        python3 ${WORKSPACE}/update_html.py \
+                        "Updated Title" ${buildMetadata.buildNumber} ${buildMetadata.pipelineName} ${buildMetadata.duration}
+                    """
+                }
+            }
+        }
     }
 }
