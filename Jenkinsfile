@@ -4,13 +4,31 @@ pipeline {
     agent { label 'yoda' }  // Run on agent "yoda"
 
     stages {
-        stage('Test Shared Library') {
+        stage('Checkout Code') {
             steps {
                 script {
-                    def metadata = buildInfo.getMetadata(currentBuild)
-                    echo "Build Number: ${metadata.buildNumber}"
-                    echo "Build Duration: ${metadata.duration}"
-                    echo "Pipeline Name: ${metadata.pipelineName}"
+                    checkout scm  // Uses the configured repository
+                }
+            }
+        }
+        
+        stage('Test Checkout') {
+            steps {
+                script {
+                    sh "ls -l"  // List files to verify checkout
+                }
+            }
+        }
+
+        stage('Invoke Python Script') {
+            steps {
+                script {
+                    def buildMetadata = getMetadata(currentBuild)  // Fetch build metadata
+
+                    sh """
+                        python3 ${WORKSPACE}/update_html.py \
+                        "Updated Title" ${buildMetadata.buildNumber} ${buildMetadata.pipelineName} ${buildMetadata.duration}
+                    """
                 }
             }
         }
