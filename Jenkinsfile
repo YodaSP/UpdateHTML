@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     
-                        sh "python3 /mnt/d/Devops/Project/DockerVolume/nginx/update_index.py '${params.NEW_TITLE}'"
+                        sh "python3 ${WORKSPACE}/update_html.py '${params.NEW_TITLE}'"
                   
                 }
             }
